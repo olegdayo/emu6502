@@ -28,11 +28,11 @@ impl BitFields {
         Self(num)
     }
 
-    pub fn get_bit(&self, flag: &Flag) -> bool {
+    pub fn get_flag(&self, flag: &Flag) -> bool {
         self.0 & flag.to_u8() == flag.to_u8()
     }
 
-    pub fn set_bit(&mut self, flag: &Flag, val: bool) {
+    pub fn set_flag(&mut self, flag: &Flag, val: bool) {
         if val {
             self.0 = self.0 | flag.to_u8();
             return;
@@ -40,7 +40,7 @@ impl BitFields {
         self.0 = self.0 & (ALL_TRUE - flag.to_u8());
     }
 
-    pub fn invert_bit(&mut self, flag: &Flag) {
-        self.set_bit(flag, !self.get_bit(flag));
+    pub fn invert_flag(&mut self, flag: &Flag) {
+        self.set_flag(flag, !self.get_flag(flag));
     }
 }

@@ -13,38 +13,38 @@ const FLAGS: &[Flag] = &[
 #[test]
 fn test_get() {
     let bf = BitFields::new(0b10100111);
-    assert!(bf.get_bit(&Flag::Carry));
-    assert!(bf.get_bit(&Flag::Zero));
-    assert!(bf.get_bit(&Flag::Interrupt));
-    assert!(!bf.get_bit(&Flag::Decimal));
-    assert!(!bf.get_bit(&Flag::Break));
-    assert!(bf.get_bit(&Flag::Overflow));
-    assert!(!bf.get_bit(&Flag::Negative));
+    assert!(bf.get_flag(&Flag::Carry));
+    assert!(bf.get_flag(&Flag::Zero));
+    assert!(bf.get_flag(&Flag::Interrupt));
+    assert!(!bf.get_flag(&Flag::Decimal));
+    assert!(!bf.get_flag(&Flag::Break));
+    assert!(bf.get_flag(&Flag::Overflow));
+    assert!(!bf.get_flag(&Flag::Negative));
 }
 
 #[test]
 fn test_set() {
     let mut bf = BitFields::default();
     for flag in FLAGS {
-        bf.set_bit(flag, true);
-        assert!(bf.get_bit(flag));
-        bf.set_bit(flag, true);
-        assert!(bf.get_bit(flag));
+        bf.set_flag(flag, true);
+        assert!(bf.get_flag(flag));
+        bf.set_flag(flag, true);
+        assert!(bf.get_flag(flag));
 
-        bf.set_bit(flag, false);
-        assert!(!bf.get_bit(flag));
-        bf.set_bit(flag, true);
-        assert!(bf.get_bit(flag));
+        bf.set_flag(flag, false);
+        assert!(!bf.get_flag(flag));
+        bf.set_flag(flag, true);
+        assert!(bf.get_flag(flag));
 
-        bf.set_bit(flag, false);
-        assert!(!bf.get_bit(flag));
-        bf.set_bit(flag, false);
-        assert!(!bf.get_bit(flag));
+        bf.set_flag(flag, false);
+        assert!(!bf.get_flag(flag));
+        bf.set_flag(flag, false);
+        assert!(!bf.get_flag(flag));
 
-        bf.set_bit(flag, true);
-        assert!(bf.get_bit(flag));
-        bf.set_bit(flag, false);
-        assert!(!bf.get_bit(flag));
+        bf.set_flag(flag, true);
+        assert!(bf.get_flag(flag));
+        bf.set_flag(flag, false);
+        assert!(!bf.get_flag(flag));
     }
 }
 
@@ -53,10 +53,10 @@ fn test_invert() {
     let mut bf = BitFields::default();
     for flag in FLAGS {
         for _ in 0..2 {
-            bf.invert_bit(flag);
-            assert!(bf.get_bit(flag));
-            bf.invert_bit(flag);
-            assert!(!bf.get_bit(flag));
+            bf.invert_flag(flag);
+            assert!(bf.get_flag(flag));
+            bf.invert_flag(flag);
+            assert!(!bf.get_flag(flag));
         }
     }
 }

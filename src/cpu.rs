@@ -37,7 +37,7 @@ impl CPU {
         self.x = 0;
         self.y = 0;
 
-        self.memory.init();
+        self.memory.reset();
     }
 
     pub fn exec(&mut self, mut cycles_number: u32) {

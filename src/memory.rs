@@ -13,7 +13,7 @@ impl Memory {
         }
     }
 
-    pub fn init(&mut self) {
+    pub fn reset(&mut self) {
         self.data = [Byte::default(); MAXIMUM_MEMORY_SIZE];
     }
 }
