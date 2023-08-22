@@ -7,6 +7,12 @@ pub struct Memory {
 }
 
 impl Memory {
+    pub fn new() -> Self {
+        Self {
+            data: [Byte::default(); MAXIMUM_MEMORY_SIZE],
+        }
+    }
+
     pub fn init(&mut self) {
         self.data = [Byte::default(); MAXIMUM_MEMORY_SIZE];
     }

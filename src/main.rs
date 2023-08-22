@@ -1,11 +1,6 @@
-// #![no_std]
-// #![no_main]
+use emu6502::cpu::CPU;
 
-// use core::panic::PanicInfo;
-
-// #[panic_handler]
-// fn panic(_info: &PanicInfo) -> ! {
-//     loop {}
-// }
-
-fn main() {}
+fn main() {
+    let mut cpu = CPU::new();
+    cpu.exec(2);
+}
