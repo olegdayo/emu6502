@@ -1,8 +1,10 @@
 use crate::{
+    instructions::group2,
     memory::Memory,
     types::{BitFields, Byte, Word},
 };
 
+#[derive(Debug)]
 pub struct CPU {
     pub program_counter: Word,
     pub stack_pointer: Byte,
@@ -11,8 +13,6 @@ pub struct CPU {
     pub accumulator: Byte,
     pub x: Byte,
     pub y: Byte,
-
-    memory: Memory,
 }
 
 impl CPU {
@@ -24,11 +24,10 @@ impl CPU {
             accumulator: 0,
             x: 0,
             y: 0,
-            memory: Memory::new(),
         }
     }
 
-    pub fn reset(&mut self) {
+    pub fn reset(&mut self, memory: &mut Memory) {
         self.stack_pointer = 0x00ff;
         self.program_counter = 0xfffc;
         self.processor_status = BitFields::default();
@@ -37,17 +36,31 @@ impl CPU {
         self.x = 0;
         self.y = 0;
 
-        self.memory.reset();
+        memory.reset();
     }
 
-    pub fn exec(&mut self, mut cycles_number: u32) {
+    pub fn exec(&mut self, memory: &mut Memory, mut cycles_number: u32) {
         while cycles_number > 0 {
-            let instruction = self.fetch_byte(&mut cycles_number);
+            let instruction = self.fetch_byte(memory, &mut cycles_number);
+            match instruction {
+                group2::LDA => {
+                    let val = self.fetch_byte(memory, &mut cycles_number);
+                    self.accumulator = val;
+                    self.processor_status
+                        .set_flag(&crate::types::Flag::Zero, self.accumulator == 0);
+                    self.processor_status.set_flag(
+                        &crate::types::Flag::Negative,
+                        self.accumulator & 0b10000000 > 0,
+                    );
+                }
+
+                _ => {}
+            }
         }
     }
 
-    fn fetch_byte(&mut self, cycles_number: &mut u32) -> Byte {
-        let data = self.memory.data[self.program_counter as usize];
+    fn fetch_byte(&mut self, memory: &mut Memory, cycles_number: &mut u32) -> Byte {
+        let data = memory[self.program_counter];
         self.program_counter += 1;
         *cycles_number -= 1;
         data
